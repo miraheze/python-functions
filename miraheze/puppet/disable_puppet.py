@@ -11,4 +11,4 @@ def disable_puppet():
 
 
 if __name__ == '__main__':
-  disable_puppet()
+    disable_puppet()
