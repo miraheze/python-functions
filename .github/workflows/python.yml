@@ -31,6 +31,11 @@ jobs:
   
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/Miraheze_PyUtils
+    permissions:
+      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.10.0
@@ -50,9 +55,6 @@ jobs:
       - name: Publish to PyPi
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@v1.8.14
-        with:
-          user: __token__
-          password: ${{ secrets.pypi_token }}
 
   notify-irc:
     needs: build
