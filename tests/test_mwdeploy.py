@@ -4,7 +4,7 @@ import re
 import pytest
 import unittest
 from unittest.mock import MagicMock, patch
-import miraheze.mediawiki.mwdeploy
+from miraheze.mediawiki import mwdeploy
 
 
 class TestTagFunctions(unittest.TestCase):
