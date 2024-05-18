@@ -11,15 +11,13 @@ setup(
     name='Miraheze_PyUtils',
     version=VERSION,
     description='Python Utilities for Miraheze',
-    long_description=readme,  # + '\n\n' + history,
+    long_description=readme
     long_description_content_type='text/markdown',  # This is important!
     author='RhinosF1',
     author_email='rhinosf1@wikitide.org',
-    url='https://github.com/FOSSBots/MirahezeBots',
+    url='https://github.com/miraheze/python-functions',
     packages=find_packages('.'),
     include_package_data=True,
-    install_requires=requirements,
-    # tests_require=dev_requirements,
     test_suite='tests',
     license='GPL3',
 )
