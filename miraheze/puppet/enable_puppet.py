@@ -3,7 +3,7 @@
 from os import system
 
 
-def enable_puppet()-> None:
+def enable_puppet() -> None:
     system('sudo puppet agent --enable')
     system('sudo puppet agent -tv')
     system('logsalmsg enabled puppet')
