@@ -10,7 +10,7 @@ def fix_container_perms(wiki: str) -> None:
     for match in matches:
         subprocess.run(['swift', 'post', '--read-acl', 'mw:media', '--write-acl', 'mw:media', f'miraheze-{wiki}-{match}'], check=True)
 
-    os.system(f'sudo -u www-data php /srv/mediawiki/1.41/maintenance/run.php /srv/mediawiki/1.41/extensions/CreateWiki/maintenance/setContainersAccess.php --wiki {wiki}')
+    subprocess.run(['sudo', '-u', 'www-data', 'php', '/srv/mediawiki/1.41/maintenance/run.php', '/srv/mediawiki/1.41/extensions/CreateWiki/maintenance/setContainersAccess.php', '--wiki', wiki])
 
 
 def main() -> None:
