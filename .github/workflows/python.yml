@@ -25,7 +25,7 @@ jobs:
         run: |
           flake8 --ignore=E501,W503,SFS301,T003,PT009
           #coverage run --branch -m pytest tests
-          mypy --ignore-missing-imports --disallow-untyped-defs
+          mypy miraheze --ignore-missing-imports --disallow-untyped-defs
 
   notify-irc:
     needs: build
