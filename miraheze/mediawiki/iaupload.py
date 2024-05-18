@@ -12,7 +12,7 @@ from datetime import datetime
 
 
 class ArchiveUploader:
-    def __init__(self):
+    def __init__(self)-> None:
         self.parser = argparse.ArgumentParser(
             description='Uploads a file to archive.org.')
         self.parser.add_argument(
@@ -37,7 +37,7 @@ class ArchiveUploader:
             '--proxy', dest='proxy', default='http://bastion.wikitide.net:8080',
             help='The proxy to use for requests to archive.org. Optional. Default: http://bastion.wikitide.net:8080')
 
-    def upload(self):
+    def upload(self)-> None:
         args = self.parser.parse_args()
 
         item = internetarchive.get_item(args.title)
