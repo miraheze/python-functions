@@ -1,5 +1,8 @@
 import argparse
-from miraheze.salt.utils import generate_salt_command,execute_salt_command,get_db_cluster
+import sys
+import os
+from miraheze.salt.utils import generate_salt_command, execute_salt_command, get_db_cluster
+
 
 def reset_wiki(wiki: str) -> None:
     # Step 1: Get the db cluster for the wiki
