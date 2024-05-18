@@ -19,8 +19,8 @@ setup(
     name='Miraheze_PyUtils',
     version=VERSION,
     description='Python Utilities for Miraheze',
-    long_description=readme, # + '\n\n' + history,
-    long_description_content_type='text/markdown', # This is important!
+    long_description=readme,  # + '\n\n' + history,
+    long_description_content_type='text/markdown',  # This is important!
     author='RhinosF1',
     author_email='rhinosf1@wikitide.org',
     url='https://github.com/FOSSBots/MirahezeBots',
