@@ -1,5 +1,7 @@
 import argparse
-from miraheze.salt.utils import generate_salt_command,execute_salt_command,get_db_cluster
+import sys
+from miraheze.salt.utils import generate_salt_command, execute_salt_command, get_db_cluster
+
 
 def rename_wiki(oldwiki_db: str, newwiki_db: str) -> None:
     # Step 1: Get the db cluster for the old wiki dbname
