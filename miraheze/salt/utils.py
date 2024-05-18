@@ -1,4 +1,7 @@
-
+import subprocess
+import sys
+import os
+from typing import Optional, TypedDict
 
 class DbClusterMap(TypedDict):
     c1: str
@@ -29,7 +32,7 @@ def execute_salt_command(salt_command: str, shell: bool = True, stdout: Optional
         except subprocess.CalledProcessError as e:
             print(f"Command '{salt_command}' failed with return code {e.returncode}")
         except Exception as e:
-            print(f"An error occurred: {e}")
+            print(f'An error occurred: {e}')
         return None
     if response in ['s', 'skip']:
         return None
