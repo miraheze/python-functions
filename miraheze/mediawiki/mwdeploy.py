@@ -74,7 +74,7 @@ def get_valid_extensions(versions: list[str]) -> list[str]:
     for version in versions:
         extensions_path = f'/srv/mediawiki-staging/{version}/extensions/'
         with os.scandir(extensions_path) as extensions:
-            valid_extensions.extend(extension.name for extension in extensions if extension.is_dir() and '.git' in os.listdir(extension.path))
+            valid_extensions += [extension.name for extension in extensions if os.path.isdir(os.path.join(extension.path, '.git'))]
     return sorted(valid_extensions)
 
 
@@ -106,10 +106,8 @@ def get_skins_in_pack(pack_name: str) -> list[str]:
     return packs.get(pack_name, [])
 
 
-global build_regex
-build_regex = re.compile(r'^.*?(\.github/.*?|\.phan/.*?|tests/.*?|composer(\.json|\.lock)|package(-lock)?\.json|yarn\.lock|(\.phpcs|\.stylelintrc|\.eslintrc|\.prettierrc|\.stylelintignore|\.eslintignore|\.prettierignore|tsconfig)\.json|\.nvmrc|\.svgo\.config\.js|Gruntfile\.js|bundlesize\.config\.json|jsdoc\.json)$')
-
 def get_change_tag_map() -> dict[re.Pattern, str]:
+    build_regex = re.compile(r'^.*?(\.github/.*?|\.phan/.*?|tests/.*?|composer(\.json|\.lock)|package(-lock)?\.json|yarn\.lock|(\.phpcs|\.stylelintrc|\.eslintrc|\.prettierrc|\.stylelintignore|\.eslintignore|\.prettierignore|tsconfig)\.json|\.nvmrc|\.svgo\.config\.js|Gruntfile\.js|bundlesize\.config\.json|jsdoc\.json)$')
     codechange_regex = re.compile(
         rf'(?!.*{build_regex.pattern})'
         r'^.*?(\.(php|js|css|less|scss|vue|lua|mustache|d\.ts)|extension(-repo|-client)?\.json|skin\.json)$',
@@ -216,7 +214,7 @@ def check_up(nolog: bool, Debug: str | None = None, Host: str | None = None, dom
         if force:
             print(f'Ignoring canary check error on {location} due to --force')
         else:
-            logger.error(f'Canary check failed for {location}. Aborting... - use --force to proceed')
+            print(f'Canary check failed for {location}. Aborting... - use --force to proceed')
             message = f'/usr/local/bin/logsalmsg DEPLOY ABORTED: Canary check failed for {location}'
             if nolog:
                 print(message)
@@ -258,16 +256,17 @@ def _construct_rsync_command(time: bool | str, dest: str, recursive: bool = True
         params = '--update'
     if recursive:
         params = params + ' -r --delete'
-    simplified_command = f'sudo -u {DEPLOYUSER} rsync {params} --exclude=".*" '
     if local:
         if location is None:
             raise Exception('Location must be specified for local rsync.')
-        return simplified_command + f'{location} {dest}'
+        return f'sudo -u {DEPLOYUSER} rsync {params} --exclude=".*" {location} {dest}'
     if location is None:
         location = dest
-    if location == dest and server:
-        return simplified_command + f'-e "ssh -i /srv/mediawiki-staging/deploykey" {dest} {DEPLOYUSER}@{server}.wikitide.net:{dest}'
+    if location == dest and server:  # ignore location if not specified, if given must equal dest.
+        return f'sudo -u {DEPLOYUSER} rsync {params} -e "ssh -i /srv/mediawiki-staging/deploykey" {dest} {DEPLOYUSER}@{server}.wikitide.net:{dest}'
+    # a return None here would be dangerous - except and ignore R503 as return after Exception is not reachable
     raise Exception(f'Error constructing command. Either server was missing or {location} != {dest}')
+
 
 def _construct_git_pull(repo: str, submodules: bool = False, branch: str | None = None, quiet: bool = True, version: str = '') -> str:
     extrap = ' '
@@ -359,7 +358,7 @@ def run(args: argparse.Namespace, start: float) -> None:  # pragma: no cover
             os.system(f'/usr/local/bin/logsalmsg {fintext}')
         else:
             print(fintext)
-        raise DeploymentError('Deployment failed due to non-zero exit codes')
+        sys.exit(1)
 
     if use_version:
         for version in args.versions:
@@ -372,7 +371,7 @@ def run(args: argparse.Namespace, start: float) -> None:  # pragma: no cover
                     os.system(f'/usr/local/bin/logsalmsg {fintext}')
                 else:
                     print(fintext)
-                raise DeploymentError('Deployment failed due to non-zero exit codes')
+                sys.exit(1)
 
     fintext += ' - SUCCESS'
     fintext += f' in {str(int(time.time() - start))}s'
