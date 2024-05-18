@@ -7,6 +7,10 @@ with open('README.md') as readme_file:
     readme = readme_file.read()
 
 
+with open('requirements.txt') as requirements_file:
+    requirements = list(requirements_file.readlines())
+
+
 setup(
     name='Miraheze_PyUtils',
     version=VERSION,
@@ -18,6 +22,7 @@ setup(
     url='https://github.com/miraheze/python-functions',
     packages=find_packages('.'),
     include_package_data=True,
+    install_requires=requirements,
     test_suite='tests',
     license='GPL3',
 )
