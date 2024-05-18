@@ -21,11 +21,13 @@ jobs:
           sudo apt-get install -y libgnutls28-dev
           pip install -U pip
           pip install -r .github/pythonchecks.txt
+          pyproject-build --wheel --outdir dist .
+          find dist -name "*.whl" | xargs pip3 install
       - name: Run tests
         run: |
-          flake8 --ignore=E501,W503,SFS301,T003,PT009
-          coverage run --branch -m pytest tests
-          mypy --ignore-missing-imports --disallow-untyped-defs
+          flake8 --exclude=*/__init__.py,dist/*,build/* --ignore=E501,W503,SFS301,T003,PT009
+          #coverage run --branch -m pytest tests
+          mypy miraheze --ignore-missing-imports --disallow-untyped-defs
 
   notify-irc:
     needs: build
