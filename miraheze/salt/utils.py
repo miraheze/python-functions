@@ -1,7 +1,7 @@
 import subprocess
 import sys
-import os
 from typing import Optional, TypedDict
+
 
 class DbClusterMap(TypedDict):
     c1: str
@@ -21,7 +21,6 @@ db_clusters: DbClusterMap = {
 
 def generate_salt_command(cluster: str, command: str) -> str:
     return f'salt-ssh -E "{cluster}" cmd.run "{command}"'
-
 
 
 def execute_salt_command(salt_command: str, shell: bool = True, stdout: Optional[int] = None, text: Optional[bool] = None) -> Optional[subprocess.CompletedProcess]:
