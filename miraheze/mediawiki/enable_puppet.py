@@ -4,9 +4,9 @@ from os import system
 
 
 def enable_puppet():
-  system('sudo puppet agent --enable')
-  system('sudo puppet agent -tv')
-  system('logsalmsg enabled puppet')
+    system('sudo puppet agent --enable')
+    system('sudo puppet agent -tv')
+    system('logsalmsg enabled puppet')
 
 
 if __name__ == '__main__':
