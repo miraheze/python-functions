@@ -10,4 +10,4 @@ def enable_puppet():
 
 
 if __name__ == '__main__':
-  enable_puppet()
+    enable_puppet()
