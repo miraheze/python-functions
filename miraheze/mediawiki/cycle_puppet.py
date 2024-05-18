@@ -2,6 +2,7 @@
 
 from os import system
 import sys
-system(f'disable-puppet "{sys.argv[1]}"')
+from miraheze.mediawiki import disable_puppet, enable_puppet
+disable_puppet.disable_puppet()
 input('press enter to re-enable puppet')
-system('enable-puppet')
+enable_puppet.enable_puppet()
