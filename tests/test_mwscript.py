@@ -1,5 +1,5 @@
 import os
-import miraheze.mediawiki.mwscript
+from miraheze.mediawiki import mwscript
 from unittest.mock import patch
 
 
