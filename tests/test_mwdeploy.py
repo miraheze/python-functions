@@ -5,6 +5,12 @@ import pytest
 import unittest
 from unittest.mock import MagicMock, patch
 from miraheze.mediawiki import mwdeploy
+from miraheze.mediawiki.mwdeploy import (
+    UpgradePackAction,
+    LangAction,
+    VersionsAction,
+    ServersAction,
+)
 
 
 class TestTagFunctions(unittest.TestCase):
