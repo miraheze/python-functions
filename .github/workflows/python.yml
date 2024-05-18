@@ -21,6 +21,8 @@ jobs:
           sudo apt-get install -y libgnutls28-dev
           pip install -U pip
           pip install -r .github/pythonchecks.txt
+          pyproject-build --wheel --outdir dist .
+          find dist -name "*.whl" | xargs pip3 install
       - name: Run tests
         run: |
           flake8 --ignore=E501,W503,SFS301,T003,PT009
