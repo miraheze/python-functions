@@ -19,6 +19,8 @@ setup(
     long_description_content_type='text/markdown',  # This is important!
     author='RhinosF1',
     author_email='rhinosf1@wikitide.org',
+    maintainer='Miraheze Technology Team',
+    maintainer_email='sre@wikitide.org',
     url='https://github.com/miraheze/python-functions',
     packages=find_packages('.'),
     include_package_data=True,
