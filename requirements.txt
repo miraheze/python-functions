@@ -1,4 +1,4 @@
 requests
 filelock
-langcodes==3.3.0
+langcodes==3.4.0
 internetarchive
