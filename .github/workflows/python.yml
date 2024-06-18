@@ -28,8 +28,35 @@ jobs:
           flake8 --exclude=*/__init__.py,dist/*,build/* --ignore=E501,W503,SFS301,T003,PT009
           coverage run --branch -m pytest tests
           mypy miraheze --ignore-missing-imports
-  
+  deb:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v4
+     - name: Install requirements
+       run: |
+        sudo apt install -y python3-requests python3-filelock python3-internetarchive
+        sudo apt install -y python3-apt apt-file dpkg-dev fakeroot build-essential devscripts debhelper
+        sudo apt-file update
+        pip install build wheel2deb
+     - name: Build wheel
+       run: |
+          pyproject-build --wheel --outdir dist .
+          cd dist
+          pip wheel langcodes==3.3.0 --no-deps
+     - name: wheel2deb
+       run: |
+          cd dist
+          wheel2deb
+     - name: show off
+       run: |
+          cd dist
+          ls -l output/*.deb
+          sudo dpkg -i output/*.deb
+          apt show python3-miraheze-pyutils
+          
   deploy:
+    needs: deb
     runs-on: ubuntu-latest
     environment:
       name: pypi
@@ -55,9 +82,11 @@ jobs:
       - name: Publish to PyPi
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@v1.9.0
+    
+    
 
   notify-irc:
-    needs: build
+    needs: deb
     runs-on: ubuntu-latest
     if: ${{ always() && github.repository_owner == 'miraheze' && ( github.ref == 'refs/heads/master' || github.event_name == 'pull_request' ) }}
     steps:
