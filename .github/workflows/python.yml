@@ -35,7 +35,7 @@ jobs:
      - uses: actions/checkout@v4
      - name: Install requirements
        run: |
-        sudo apt install -y python3-requests python3-filelock
+        sudo apt install -y python3-requests python3-filelock python3-internetarchive
         sudo apt install -y python3-apt apt-file dpkg-dev fakeroot build-essential devscripts debhelper
         sudo apt-file update
         pip install build wheel2deb
@@ -43,7 +43,7 @@ jobs:
        run: |
           pyproject-build --wheel --outdir dist .
           cd dist
-          pip wheel *.whl
+          pip wheel langcodes
           rm charset_*
      - name: wheel2deb
        run: |
