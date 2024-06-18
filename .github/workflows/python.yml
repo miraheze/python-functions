@@ -74,7 +74,7 @@ jobs:
           pip wheel *.whl
      - name: wheel2deb
        run: |
-          ls
+          cd dist
           wheel2deb
           wheel2deb build
      - name: show off
