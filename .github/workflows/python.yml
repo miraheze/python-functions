@@ -90,7 +90,7 @@ jobs:
     
 
   notify-irc:
-    needs: deb
+    needs: deploy
     runs-on: ubuntu-latest
     if: ${{ always() && github.repository_owner == 'miraheze' && ( github.ref == 'refs/heads/master' || github.event_name == 'pull_request' ) }}
     steps:
