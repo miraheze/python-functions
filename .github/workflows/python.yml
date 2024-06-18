@@ -35,7 +35,7 @@ jobs:
      - uses: actions/checkout@v4
      - name: Install requirements
        run: |
-        sudo apt install -y python3-requests python3-filelock python3-internetarchive
+        sudo apt install -y python3-requests python3-filelock python3-internetarchive python3-setuptools
         sudo apt install -y python3-apt apt-file dpkg-dev fakeroot build-essential devscripts debhelper
         sudo apt-file update
         pip install build wheel2deb
@@ -43,7 +43,11 @@ jobs:
        run: |
           pyproject-build --wheel --outdir dist .
           cd dist
-          pip wheel langcodes==3.3.0 --no-deps
+          pip wheel langcodes==3.4.0 --no-deps
+          pip wheel language_data==1.2.0 --no-deps
+          pip wheel marisa_trie==1.2.0 --no-deps
+          # FIXME: https://github.com/pytries/marisa-trie/issues/106
+          mv marisa_trie-1.2.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl marisa_trie-1.2.0-py3-cp310-manylinux2014_x86_64.whl
      - name: wheel2deb
        run: |
           cd dist
