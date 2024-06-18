@@ -46,6 +46,7 @@ jobs:
           pip wheel langcodes==3.4.0 --no-deps
           pip wheel language_data==1.2.0 --no-deps
           pip wheel marisa_trie==1.2.0 --no-deps
+          # FIXME: https://github.com/pytries/marisa-trie/issues/106
           mv marisa_trie-1.2.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl marisa_trie-1.2.0-py3-cp310-manylinux2014_x86_64.whl
      - name: wheel2deb
        run: |
