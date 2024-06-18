@@ -75,7 +75,9 @@ jobs:
      - name: wheel2deb
        run: |
           cd dist
+          ls
           wheel2deb
+          ls
           wheel2deb build
      - name: show off
        run: |
