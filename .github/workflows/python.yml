@@ -43,7 +43,7 @@ jobs:
        run: |
           pyproject-build --wheel --outdir dist .
           cd dist
-          pip wheel langcodes==3.4.0 --no-deps
+          pip wheel langcodes==3.3.0 --no-deps
      - name: wheel2deb
        run: |
           cd dist
