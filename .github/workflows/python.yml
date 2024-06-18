@@ -78,7 +78,8 @@ jobs:
           ls
           wheel2deb
           ls
-          wheel2deb build
+          ls output
+          wheel2deb build output
      - name: show off
        run: |
           ls -l output/*.deb
