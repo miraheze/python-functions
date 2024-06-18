@@ -55,6 +55,32 @@ jobs:
       - name: Publish to PyPi
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@v1.9.0
+  deb:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+     - name: Install requirements
+       run: |
+        sudo apt install -y python3-requests python3-filelock
+        sudo apt install -y python3-apt apt-file dpkg-dev fakeroot build-essential devscripts debhelper
+        sudo apt-file update
+        pip install build wheel2deb
+     - name: Build wheel
+       run: |
+          cd modules/mediawiki/files/bin
+          pyproject-build --wheel --outdir dist .
+          cd dist
+          pip wheel MW_SRE_Utils-3.0-py3-none-any.whl
+     - name: wheel2deb
+       run: |
+          wheel2deb
+          wheel2deb build
+     - name: show off
+       run: |
+          ls -l output/*.deb
+          dpkg -i output/*.deb
+    
+    
 
   notify-irc:
     needs: build
