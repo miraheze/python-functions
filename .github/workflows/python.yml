@@ -67,7 +67,8 @@ jobs:
         pip install build wheel2deb
      - name: Build wheel
        run: |
-          ls && pyproject-build --wheel --outdir dist .
+          ls
+          pyproject-build --wheel --outdir dist .
           cd dist
           pip wheel MW_SRE_Utils-3.0-py3-none-any.whl
      - name: wheel2deb
