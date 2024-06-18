@@ -44,7 +44,6 @@ jobs:
           pyproject-build --wheel --outdir dist .
           cd dist
           pip wheel langcodes
-          rm charset_*
      - name: wheel2deb
        run: |
           cd dist
