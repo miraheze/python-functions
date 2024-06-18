@@ -21,7 +21,7 @@ jobs:
           sudo apt-get install -y libgnutls28-dev
           pip install -U pip
           pip install -r .github/pythonchecks.txt
-          pip install -r .github/noauto.txt
+          pip install -r .deps/noauto.txt
           pyproject-build --wheel --outdir dist .
           find dist -name "*.whl" | xargs pip3 install
       - name: Run tests
