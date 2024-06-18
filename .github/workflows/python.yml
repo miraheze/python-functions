@@ -76,12 +76,15 @@ jobs:
        run: |
           cd dist
           ls
+          wheel2deb --help
           wheel2deb
           ls
           ls output
-          wheel2deb build output
+          wheel2deb build --help
+          wheel2deb build
      - name: show off
        run: |
+          cd dist
           ls -l output/*.deb
           dpkg -i output/*.deb
     
