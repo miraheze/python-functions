@@ -20,5 +20,5 @@ types-requests==2.32.0.20240712
 pytest-xdist==3.6.1
 flake8-noqa==1.4.0
 coverage==7.6.0
-setuptools==71.0.1; python_version == '3.12'
+setuptools==71.0.3; python_version == '3.12'
 build==1.2.1
