@@ -1,5 +1,5 @@
 ## TESTING ONLY
-pytest==8.2.2
+pytest==8.3.3
 wheel==0.44.0
 flake8==7.1.1
 flake8-unused-arguments==0.0.13
