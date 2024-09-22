@@ -4,6 +4,22 @@ from unittest.mock import patch
 
 
 # T12351
+def test_get_args_extension_left():
+    args = mwscript.get_args(['--extension=awawa', 'testScript.php', '--test'])
+    assert args.extension == 'awawa'
+    assert args.script == 'testScript.php'
+    assert args.arguments == ['--test']
+
+
+# T12351
+def test_get_args_extension_right():
+    args = mwscript.get_args(['testScript.php', '--extension=awawa', '--test'])
+    assert args.extension is None
+    assert args.script == 'testScript.php'
+    assert args.arguments == ['--extension=awawa', '--test']
+
+
+# T12351
 def test_get_args_maintenance_script_gets_all_arguments():
     args = mwscript.get_args(['--extension=a', 'testScript.php', '--extension=b', '--test'])
     assert args.extension == 'a'
