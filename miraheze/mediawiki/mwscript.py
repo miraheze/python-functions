@@ -146,7 +146,7 @@ def run(info: CommandInfo) -> None:  # pragma: no cover
         print('Aborted!')
 
 
-def get_args() -> argparse.Namespace:
+def get_args(args: list | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Run a MediaWiki Script')
     parser.add_argument('script')
     parser.add_argument('arguments', nargs=argparse.REMAINDER, default=[])
@@ -155,8 +155,8 @@ def get_args() -> argparse.Namespace:
     parser.add_argument('--no-log', dest='nolog', action='store_true')
     parser.add_argument('--confirm', '--yes', '-y', dest='confirm', action='store_true')
 
-    args = parser.parse_known_args()[0]
-    args.arguments += parser.parse_known_args()[1]
+    args, arguments = parser.parse_known_args(args)
+    args.arguments += arguments
     return args
 
 

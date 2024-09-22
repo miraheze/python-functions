@@ -3,6 +3,14 @@ from miraheze.mediawiki import mwscript
 from unittest.mock import patch
 
 
+# T12351
+def test_get_args_maintenance_script_gets_all_arguments():
+    args = mwscript.get_args(['--extension=a', 'testScript.php', '--extension=b', '--test'])
+    assert args.extension == 'a'
+    assert args.script == 'testScript.php'
+    assert args.arguments == ['--extension=b', '--test']
+
+
 def test_get_command_simple():
     args = mwscript.get_args()
     args.script = 'test.php'
