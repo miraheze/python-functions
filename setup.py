@@ -1,4 +1,4 @@
-"""Controls the setup of the package by setuptools/pip."""
+"""Controls the setup of python-functions by setuptools/pip."""
 from setuptools import find_packages, setup
 
 from miraheze.version import VERSION
