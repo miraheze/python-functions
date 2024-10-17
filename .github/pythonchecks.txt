@@ -21,4 +21,4 @@ pytest-xdist==3.6.1
 flake8-noqa==1.4.0
 coverage==7.6.3
 setuptools==75.2.0; python_version == '3.12'
-build==1.2.2
+build==1.2.2.post1
