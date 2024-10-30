@@ -84,7 +84,7 @@ jobs:
         run: pyproject-build --wheel --outdir dist .
       - name: Publish to PyPi
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-        uses: pypa/gh-action-pypi-publish@v1.10.3
+        uses: pypa/gh-action-pypi-publish@v1.11.0
     
     
 
