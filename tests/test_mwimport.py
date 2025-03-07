@@ -1,6 +1,7 @@
 import pytest
 from miraheze.mediawiki import mwimport
 
+
 def test_parse_args_xml_images():
     args = mwimport.parse_args([
         "--xml=dump.xml",
@@ -12,6 +13,7 @@ def test_parse_args_xml_images():
     assert args.images == "images"
     assert args.images_comment == "Importing from https://example.com"
     assert args.wiki == "examplewiki"
+
 
 def test_parse_args_images_recursively():
     args = mwimport.parse_args([
@@ -25,6 +27,7 @@ def test_parse_args_images_recursively():
     assert args.images_comment == "Importing from https://example.com"
     assert args.wiki == "examplewiki"
 
+
 def test_parse_args_no_log_and_confirm_and_version():
     args = mwimport.parse_args([
         "--no-log",
@@ -37,6 +40,7 @@ def test_parse_args_no_log_and_confirm_and_version():
     assert args.confirm
     assert args.version == "0.42"
 
+
 def test_parse_args_username_prefix():
     args = mwimport.parse_args([
         "--xml=dump.xml",
@@ -45,12 +49,14 @@ def test_parse_args_username_prefix():
     ], False)
     assert args.username_prefix == "w"
 
+
 def test_parse_args_need_xml_or_images():
     with pytest.raises(ValueError) as excinfo:
         mwimport.parse_args([
             "examplewiki",
         ])
     assert str(excinfo.value) == "--xml and/or --images must be passed"
+
 
 def test_parse_args_images_need_comment():
     with pytest.raises(ValueError) as excinfo:
@@ -60,6 +66,7 @@ def test_parse_args_images_need_comment():
         ])
     assert str(excinfo.value) == "--images-comment must be passed when importing images"
 
+
 def test_parse_args_missing_xml():
     with pytest.raises(ValueError) as excinfo:
         mwimport.parse_args([
@@ -67,6 +74,7 @@ def test_parse_args_missing_xml():
             "examplewiki",
         ])
     assert str(excinfo.value) == "Cannot find XML to import: '/dev/no xml?'"
+
 
 def test_parse_args_missing_images():
     with pytest.raises(ValueError) as excinfo:
@@ -76,6 +84,7 @@ def test_parse_args_missing_images():
             "examplewiki",
         ])
     assert str(excinfo.value) == "Cannot find images to import: '/dev/no images?'"
+
 
 def test_get_scripts_xml_images():
     args = mwimport.parse_args([
@@ -93,6 +102,7 @@ def test_get_scripts_xml_images():
         ["initSiteStats", "--update"],
     ]
 
+
 def test_get_scripts_username_prefix():
     args = mwimport.parse_args([
         "--xml=dump.xml",
@@ -106,6 +116,7 @@ def test_get_scripts_username_prefix():
         ["initEditCount"],
         ["initSiteStats", "--update"],
     ]
+
 
 def test_get_scripts_search_recursively():
     args = mwimport.parse_args([

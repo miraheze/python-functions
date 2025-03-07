@@ -5,20 +5,29 @@ import shlex
 import subprocess
 import sys
 
+
 def parse_args(args: list | None = None, check_paths: bool = True) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="A script to automate manual wiki imports")
-    parser.add_argument("--no-log", dest="nolog", action="store_true",
-        help="Whether or not to disable logging to the server admin log")
-    parser.add_argument("--confirm", "--yes", "-y", dest="confirm", action="store_true",
-        help="Whether or not to skip the initial confirmation prompt")
+    parser.add_argument(
+        "--no-log", dest="nolog", action="store_true",
+        help="Whether or not to disable logging to the server admin log",
+    )
+    parser.add_argument(
+        "--confirm", "--yes", "-y", dest="confirm", action="store_true",
+        help="Whether or not to skip the initial confirmation prompt",
+    )
     parser.add_argument("--version", help="MediaWiki version to use (automatically detected if not passed)")
     parser.add_argument("--xml", help="XML file to import")
     parser.add_argument("--username-prefix", help="Interwiki prefix for importing XML")
     parser.add_argument("--images", help="Directory of images to import")
-    parser.add_argument("--images-comment", help="The comment passed to importImages.php"
-        " (example: 'Importing images from https://example.com ([[phorge:T1234|T1234]])')")
-    parser.add_argument("--search-recursively", action="store_true",
-        help="Whether or not to pass --search-recursively (check files in subdirectories) to importImages.php")
+    parser.add_argument(
+        "--images-comment", help="The comment passed to importImages.php"
+        " (example: 'Importing images from https://example.com ([[phorge:T1234|T1234]])')",
+    )
+    parser.add_argument(
+        "--search-recursively", action="store_true",
+        help="Whether or not to pass --search-recursively (check files in subdirectories) to importImages.php",
+    )
     parser.add_argument("wiki", help="Database name of the wiki to import to")
 
     args = parser.parse_args(args)
@@ -39,11 +48,13 @@ def parse_args(args: list | None = None, check_paths: bool = True) -> argparse.N
 
     return args
 
+
 def log(message: str):
     subprocess.run(
         ["/usr/local/bin/logsalmsg", message],
         check=True,
     )
+
 
 def get_version(wiki: str) -> str:
     return subprocess.run(
@@ -52,6 +63,7 @@ def get_version(wiki: str) -> str:
         check=True,
         text=True,
     ).stdout.strip()
+
 
 def get_scripts(args: argparse.Namespace) -> list[list[str]]:
     scripts = []
@@ -76,6 +88,7 @@ def get_scripts(args: argparse.Namespace) -> list[list[str]]:
 
     return scripts
 
+
 def run_scripts(args: argparse.Namespace, scripts: list[list[str]]) -> int:
     for script in scripts:
         print(f"Running {shlex.join(script)}")
@@ -93,6 +106,7 @@ def run_scripts(args: argparse.Namespace, scripts: list[list[str]]) -> int:
             return proc.returncode
 
     return 0
+
 
 def run():
     try:
@@ -126,6 +140,7 @@ def run():
         log(f"Finished import for {args.wiki} (XML: {args.xml}; Images: {args.images}) (END - exit={return_code})")
 
     return return_code
+
 
 if __name__ == "__main__":
     sys.exit(run())
