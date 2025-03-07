@@ -125,9 +125,8 @@ def run():
     print("Will run:")
     for script in scripts:
         print(f"* {shlex.join(script)}")
-    if not args.confirm:
-        if input("Type 'Y' to confirm: ").upper() != "Y":
-            return 1
+    if not args.confirm and input("Type 'Y' to confirm: ").upper() != "Y":
+        return 1
 
     if not args.nolog:
         print("Logging start...")
