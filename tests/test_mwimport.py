@@ -66,7 +66,7 @@ def test_parse_args_images_need_comment():
 
 
 def test_parse_args_missing_xml():
-    with pytest.raises(ValueError, match='Cannot find XML to import: '/dev/no xml''):
+    with pytest.raises(ValueError, match="Cannot find XML to import: '/dev/no xml'"):
         mwimport.parse_args([
             '--xml=/dev/no xml',
             'examplewiki',
@@ -74,7 +74,7 @@ def test_parse_args_missing_xml():
 
 
 def test_parse_args_missing_images():
-    with pytest.raises(ValueError, match='Cannot find images to import: '/dev/no images''):
+    with pytest.raises(ValueError, match="Cannot find images to import: '/dev/no images'"):
         mwimport.parse_args([
             '--images=/dev/no images',
             '--images-comment=Importing from https://example.com',
