@@ -96,7 +96,7 @@ def run_scripts(args: argparse.Namespace, scripts: list[list[str]]) -> int:
         print(f'Running {shlex.join(script)}')
         if not args.nolog:
             print('Logging execution...')
-            log(f"{shlex.join(script)} (START)")
+            log(f'{shlex.join(script)} (START)')
 
         proc = subprocess.run(script)
 
