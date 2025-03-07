@@ -69,15 +69,17 @@ def get_scripts(args: argparse.Namespace) -> list[list[str]]:
     scripts = []
 
     if args.xml:
-        script = ["importDump", args.xml, "--no-updates"]
+        script = ["importDump", "--no-updates"]
         if args.username_prefix:
             script.append(f"--username-prefix={args.username_prefix}")
+        script.extend(["--", args.xml])
         scripts.append(script)
 
     if args.images:
-        script = ["importImages", args.images, f"--comment={args.images_comment}"]
+        script = ["importImages", f"--comment={args.images_comment}"]
         if args.search_recursively:
             script.append("--search-recursively")
+        script.extend(["--", args.images])
         scripts.append(script)
 
     if args.xml:
