@@ -91,8 +91,8 @@ def test_get_scripts_xml_images():
     ], False)
     scripts = mwimport.get_scripts(args)
     assert scripts == [
-        ["importDump", "dump.xml", "--no-updates"],
-        ["importImages", "images", "--comment=Importing from https://example.com"],
+        ["importDump", "--no-updates", "--", "dump.xml"],
+        ["importImages", "--comment=Importing from https://example.com", "--", "images"],
         ["rebuildall"],
         ["initEditCount"],
         ["initSiteStats", "--update"],
@@ -107,7 +107,7 @@ def test_get_scripts_username_prefix():
     ], False)
     scripts = mwimport.get_scripts(args)
     assert scripts == [
-        ["importDump", "dump.xml", "--no-updates", "--username-prefix=w"],
+        ["importDump", "--no-updates", "--username-prefix=w", "--", "dump.xml"],
         ["rebuildall"],
         ["initEditCount"],
         ["initSiteStats", "--update"],
@@ -123,6 +123,6 @@ def test_get_scripts_search_recursively():
     ], False)
     scripts = mwimport.get_scripts(args)
     assert scripts == [
-        ["importImages", "images", "--comment=Importing from https://example.com", "--search-recursively"],
+        ["importImages", "--comment=Importing from https://example.com", "--search-recursively", "--", "images"],
         ["initSiteStats", "--update"],
     ]
