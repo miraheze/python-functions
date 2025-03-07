@@ -1,4 +1,4 @@
-#!/hsr/bin/env python3
+#!/usr/bin/env python3
 import argparse
 import os
 import shlex
@@ -100,7 +100,7 @@ def run_scripts(args: argparse.Namespace, scripts: list[list[str]]) -> int:
 
         if not args.nolog:
             print("Logging execution end...")
-            log(f"{shlex.join(script)} (END - exit={proc.returncode}")
+            log(f"{shlex.join(script)} (END - exit={proc.returncode})")
 
         if proc.returncode:
             return proc.returncode
