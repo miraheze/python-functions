@@ -6,7 +6,7 @@ import subprocess
 import sys
 
 
-def parse_args(args: list | None = None, check_paths: bool = True) -> argparse.Namespace:
+def parse_args(input_args: list | None = None, check_paths: bool = True) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="A script to automate manual wiki imports")
     parser.add_argument(
         "--no-log", dest="nolog", action="store_true",
@@ -30,7 +30,7 @@ def parse_args(args: list | None = None, check_paths: bool = True) -> argparse.N
     )
     parser.add_argument("wiki", help="Database name of the wiki to import to")
 
-    args = parser.parse_args(args)
+    args = parser.parse_args(input_args)
     if not args.xml and not args.images:
         raise ValueError("--xml and/or --images must be passed")
     if args.images and not args.images_comment:
