@@ -146,7 +146,7 @@ def test_non_zero_ec_only_one_one() -> None:
 def test_check_up_no_debug_host() -> None:
     with pytest.raises(Exception) as e:
         mwdeploy.check_up(nolog=True)
-    assert 'Host or Debug must be specified' in e.value
+    assert 'Host or Debug must be specified' in str(e.value)
 
 
 def test_check_up_debug() -> None:
@@ -169,25 +169,25 @@ def test_get_deployed_path() -> None:
 def test_construct_rsync_no_location_local() -> None:
     with pytest.raises(Exception) as e:
         mwdeploy._construct_rsync_command(time=False, dest='/srv/mediawiki/version/')
-    assert 'Location must be specified for local rsync.' in e.value
+    assert 'Location must be specified for local rsync.' in str(e.value)
 
 
 def test_construct_rsync_no_server_remote() -> None:
     with pytest.raises(Exception) as e:
         mwdeploy._construct_rsync_command(time=False, dest='/srv/mediawiki/version/', local=False)
-    assert 'Error constructing command. Either server was missing or /srv/mediawiki/version/ != /srv/mediawiki/version/' in e.value
+    assert 'Error constructing command. Either server was missing or /srv/mediawiki/version/ != /srv/mediawiki/version/' in str(e.value)
 
 
 def test_construct_rsync_conflict_options_remote() -> None:
     with pytest.raises(Exception) as e:
         mwdeploy._construct_rsync_command(time=False, dest='/srv/mediawiki/version/', location='garbage', local=False, server='meta')
-    assert 'Error constructing command. Either server was missing or garbage != /srv/mediawiki/version/' in e.value
+    assert 'Error constructing command. Either server was missing or garbage != /srv/mediawiki/version/' in str(e.value)
 
 
 def test_construct_rsync_conflict_options_no_server_remote() -> None:
     with pytest.raises(Exception) as e:
         mwdeploy._construct_rsync_command(time=False, dest='/srv/mediawiki/version/', location='garbage', local=False)
-    assert 'Error constructing command. Either server was missing or garbage != /srv/mediawiki/version/' in e.value
+    assert 'Error constructing command. Either server was missing or garbage != /srv/mediawiki/version/' in str(e.value)
 
 
 def test_construct_rsync_local_dir_update() -> None:
