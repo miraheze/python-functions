@@ -144,13 +144,9 @@ def test_non_zero_ec_only_one_one() -> None:
 
 
 def test_check_up_no_debug_host() -> None:
-    failed = False
-    try:
+    with pytest.raises(Exception) as e:
         mwdeploy.check_up(nolog=True)
-    except Exception as e:
-        assert str(e) == 'Host or Debug must be specified'
-        failed = True
-    assert failed
+    assert 'Host or Debug must be specified' in str(e.value)
 
 
 def test_check_up_debug() -> None:
@@ -171,43 +167,27 @@ def test_get_deployed_path() -> None:
 
 
 def test_construct_rsync_no_location_local() -> None:
-    failed = False
-    try:
+    with pytest.raises(Exception) as e:
         mwdeploy._construct_rsync_command(time=False, dest='/srv/mediawiki/version/')
-    except Exception as e:
-        assert str(e) == 'Location must be specified for local rsync.'
-        failed = True
-    assert failed
+    assert 'Location must be specified for local rsync.' in str(e.value)
 
 
 def test_construct_rsync_no_server_remote() -> None:
-    failed = False
-    try:
+    with pytest.raises(Exception) as e:
         mwdeploy._construct_rsync_command(time=False, dest='/srv/mediawiki/version/', local=False)
-    except Exception as e:
-        assert str(e) == 'Error constructing command. Either server was missing or /srv/mediawiki/version/ != /srv/mediawiki/version/'
-        failed = True
-    assert failed
+    assert 'Error constructing command. Either server was missing or /srv/mediawiki/version/ != /srv/mediawiki/version/' in str(e.value)
 
 
 def test_construct_rsync_conflict_options_remote() -> None:
-    failed = False
-    try:
+    with pytest.raises(Exception) as e:
         mwdeploy._construct_rsync_command(time=False, dest='/srv/mediawiki/version/', location='garbage', local=False, server='meta')
-    except Exception as e:
-        assert str(e) == 'Error constructing command. Either server was missing or garbage != /srv/mediawiki/version/'
-        failed = True
-    assert failed
+    assert 'Error constructing command. Either server was missing or garbage != /srv/mediawiki/version/' in str(e.value)
 
 
 def test_construct_rsync_conflict_options_no_server_remote() -> None:
-    failed = False
-    try:
+    with pytest.raises(Exception) as e:
         mwdeploy._construct_rsync_command(time=False, dest='/srv/mediawiki/version/', location='garbage', local=False)
-    except Exception as e:
-        assert str(e) == 'Error constructing command. Either server was missing or garbage != /srv/mediawiki/version/'
-        failed = True
-    assert failed
+    assert 'Error constructing command. Either server was missing or garbage != /srv/mediawiki/version/' in str(e.value)
 
 
 def test_construct_rsync_local_dir_update() -> None:
