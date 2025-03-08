@@ -121,7 +121,10 @@ def run():
 
     scripts = get_scripts(args)
     scripts = [
-        ['sudo', '-u', 'www-data', 'php', f'/srv/mediawiki/{version}/maintenance/run.php', f'--wiki={args.wiki}', *script] for script in scripts
+        # This is a hack to squeeze the --wiki argument after the script name, but before any of the other arguments
+        # (adding --wiki to every script manually is kinda clutters the whole list since most maintenance scripts
+        # run on a single wiki, and all of the ones used here also run on a single wiki)
+        ['sudo', '-u', 'www-data', 'php', f'/srv/mediawiki/{version}/maintenance/run.php', script[0], f'--wiki={args.wiki}', *script[1:]] for script in scripts
     ]
 
     print('Will run:')
