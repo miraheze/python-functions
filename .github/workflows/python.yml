@@ -44,9 +44,10 @@ jobs:
        run: |
           pyproject-build --wheel --outdir dist .
           cd dist
-          pip wheel -r ../.github/debci.txt --no-deps
           # FIXME: https://github.com/pytries/marisa-trie/issues/106
-          mv marisa_trie-1.2.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl marisa_trie-1.2.1-py3-cp310-manylinux2014_x86_64.whl
+          # For some reason, building the wheel ourselves will yield the wanted file naming convention,
+          # so we disable binary packages/wheels for marisa-trie to do so.
+          pip wheel -r ../.github/debci.txt --no-deps --no-binary marisa_trie
      - name: wheel2deb
        run: |
           cd dist
