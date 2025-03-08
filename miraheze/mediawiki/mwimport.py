@@ -98,7 +98,7 @@ def get_scripts(args: argparse.Namespace) -> list[list[str]]:
     return scripts
 
 
-def run_scripts(args: argparse.Namespace, scripts: list[list[str]]) -> int:
+def run_scripts(args: argparse.Namespace, scripts: list[list[str]]) -> int:  # pragma: no cover
     for script in scripts:
         print(f'Running {shlex.join(script)}')
         if not args.nolog:
