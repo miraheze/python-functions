@@ -87,7 +87,8 @@ def test_parse_args_missing_images():
 def test_parse_args_both_xml_images_exists():
     with tempfile.TemporaryDirectory() as tempdir:
         xml = os.path.join(tempdir, 'dump.xml')
-        open(xml, 'w').close()
+        with open(xml, 'w'):
+            # Intentionally empty since we just need to create the file, and it being empty can do
 
         images = os.path.join(tempdir, 'images')
         os.mkdir(images)
