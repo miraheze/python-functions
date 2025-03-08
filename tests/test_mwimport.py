@@ -89,6 +89,7 @@ def test_parse_args_both_xml_images_exists():
         xml = os.path.join(tempdir, 'dump.xml')
         with open(xml, 'w'):
             # Intentionally empty since we just need to create the file, and it being empty can do
+            pass
 
         images = os.path.join(tempdir, 'images')
         os.mkdir(images)
