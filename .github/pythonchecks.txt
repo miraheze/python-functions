@@ -16,7 +16,7 @@ flake8-simplify==0.21.0
 flake8-pytest==1.4
 flake8-type-checking==3.0.0
 mypy==1.15.0
-types-requests==2.32.0.20241016
+types-requests==2.32.0.20250306
 pytest-xdist==3.6.1
 flake8-noqa==1.4.0
 coverage==7.6.12
