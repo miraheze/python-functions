@@ -98,7 +98,12 @@ def run_scripts(args: argparse.Namespace, scripts: list[list[str]]) -> int:
             print('Logging execution...')
             log(f'{shlex.join(script)} (START)')
 
-        proc = subprocess.run(script)
+        proc = subprocess.Popen(script)
+        try:
+            proc.wait()
+        except KeyboardInterrupt:
+            proc.terminate()
+            proc.wait()
 
         if not args.nolog:
             print('Logging execution end...')
