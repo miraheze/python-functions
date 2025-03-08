@@ -84,45 +84,60 @@ def test_parse_args_missing_images():
 
 def test_get_scripts_xml_images():
     args = mwimport.parse_args([
+        '--version=0.42',
         '--xml=dump.xml',
         '--images=images',
         '--images-comment=Importing from https://example.com',
         'examplewiki',
     ], False)
     scripts = mwimport.get_scripts(args)
-    assert scripts == [
+    expected = [
         ['importDump', '--no-updates', '--', 'dump.xml'],
         ['importImages', '--comment=Importing from https://example.com', '--', 'images'],
         ['rebuildall'],
         ['initEditCount'],
         ['initSiteStats', '--update'],
     ]
+    expected = [
+        ['sudo', '-u', 'www-data', 'php', '/srv/mediawiki/0.42/maintenance/run.php', script[0], '--wiki=examplewiki', *script[1:]] for script in expected
+    ]
+    assert scripts == expected
 
 
 def test_get_scripts_username_prefix():
     args = mwimport.parse_args([
+        '--version=0.42',
         '--xml=dump.xml',
         '--username-prefix=w',
         'examplewiki',
     ], False)
     scripts = mwimport.get_scripts(args)
-    assert scripts == [
+    expected = [
         ['importDump', '--no-updates', '--username-prefix=w', '--', 'dump.xml'],
         ['rebuildall'],
         ['initEditCount'],
         ['initSiteStats', '--update'],
     ]
+    expected = [
+        ['sudo', '-u', 'www-data', 'php', '/srv/mediawiki/0.42/maintenance/run.php', script[0], '--wiki=examplewiki', *script[1:]] for script in expected
+    ]
+    assert scripts == expected
 
 
 def test_get_scripts_search_recursively():
     args = mwimport.parse_args([
+        '--version=0.42',
         '--images=images',
         '--images-comment=Importing from https://example.com',
         '--search-recursively',
         'examplewiki',
     ], False)
     scripts = mwimport.get_scripts(args)
-    assert scripts == [
+    expected = [
         ['importImages', '--comment=Importing from https://example.com', '--search-recursively', '--', 'images'],
         ['initSiteStats', '--update'],
     ]
+    expected = [
+        ['sudo', '-u', 'www-data', 'php', '/srv/mediawiki/0.42/maintenance/run.php', script[0], '--wiki=examplewiki', *script[1:]] for script in expected
+    ]
+    assert scripts == expected

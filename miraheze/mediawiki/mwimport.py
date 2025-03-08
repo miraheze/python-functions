@@ -49,14 +49,14 @@ def parse_args(input_args: list | None = None, check_paths: bool = True) -> argp
     return args
 
 
-def log(message: str):
+def log(message: str):  # pragma: no cover
     subprocess.run(
         ['/usr/local/bin/logsalmsg', message],
         check=True,
     )
 
 
-def get_version(wiki: str) -> str:
+def get_version(wiki: str) -> str:  # pragma: no cover
     return subprocess.run(
         ['/usr/local/bin/getMWVersion', wiki],
         stdout=subprocess.PIPE,
@@ -88,6 +88,13 @@ def get_scripts(args: argparse.Namespace) -> list[list[str]]:
 
     scripts.append(['initSiteStats', '--update'])
 
+    version = args.version or get_version(args.wiki)
+    scripts = [
+        # This is a hack to squeeze the --wiki argument after the script name, but before any of the other arguments
+        # (adding --wiki to every script manually is kinda clutters the whole list since most maintenance scripts
+        # run on a single wiki, and all of the ones used here also run on a single wiki)
+        ['sudo', '-u', 'www-data', 'php', f'/srv/mediawiki/{version}/maintenance/run.php', script[0], f'--wiki={args.wiki}', *script[1:]] for script in scripts
+    ]
     return scripts
 
 
@@ -122,15 +129,7 @@ def run():
         print(f'{type(e).__name__}: {e}', file=sys.stderr)
         return 1
 
-    version = args.version or get_version(args.wiki)
-
     scripts = get_scripts(args)
-    scripts = [
-        # This is a hack to squeeze the --wiki argument after the script name, but before any of the other arguments
-        # (adding --wiki to every script manually is kinda clutters the whole list since most maintenance scripts
-        # run on a single wiki, and all of the ones used here also run on a single wiki)
-        ['sudo', '-u', 'www-data', 'php', f'/srv/mediawiki/{version}/maintenance/run.php', script[0], f'--wiki={args.wiki}', *script[1:]] for script in scripts
-    ]
 
     print('Will run:')
     for script in scripts:
