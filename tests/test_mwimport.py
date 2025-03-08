@@ -1,3 +1,5 @@
+import os
+import tempfile
 import pytest
 from miraheze.mediawiki import mwimport
 
@@ -80,6 +82,25 @@ def test_parse_args_missing_images():
             '--images-comment=Importing from https://example.com',
             'examplewiki',
         ])
+
+
+def test_parse_args_both_xml_images_exists():
+    with tempfile.TemporaryDirectory() as tempdir:
+        xml = os.path.join(tempdir, 'dump.xml')
+        open(xml, 'w').close()
+
+        images = os.path.join(tempdir, 'images')
+        os.mkdir(images)
+
+        args = mwimport.parse_args([
+            f'--xml={xml}',
+            f'--images={images}',
+            '--images-comment=Importing from https://example.com',
+            'examplewiki',
+        ])
+
+    assert args.xml == xml
+    assert args.images == images
 
 
 def test_get_scripts_xml_images():

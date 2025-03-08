@@ -122,7 +122,7 @@ def run_scripts(args: argparse.Namespace, scripts: list[list[str]]) -> int:  # p
     return 0
 
 
-def run():
+def run():  # pragma: no cover
     try:
         args = parse_args()
     except ValueError as e:
@@ -150,5 +150,5 @@ def run():
     return return_code
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     sys.exit(run())
