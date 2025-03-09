@@ -20,5 +20,4 @@ types-requests==2.32.0.20250306
 pytest-xdist==3.6.1
 flake8-noqa==1.4.0; python_version < '3.14' # check behaves different on 3.13 and below
 coverage==7.6.12
-setuptools==75.6.0; python_version == '3.12'
 build==1.2.2.post1
