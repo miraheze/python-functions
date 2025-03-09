@@ -1,0 +1,4 @@
+requests
+filelock
+langcodes==3.5.0
+internetarchive

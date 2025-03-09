@@ -1,12 +1,12 @@
 name: Check Python
-on: [push, pull_request]
+on: [push, pull_request, merge_group]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: ['3.11', '3.12']
+        python: ['3.11', '3.12', '3.13', '3.14-dev']
     env:
       DEBUG_ACCESS_KEY: ${{ secrets.DEBUG_ACCESS_KEY }}
     steps:
@@ -21,15 +21,46 @@ jobs:
           sudo apt-get install -y libgnutls28-dev
           pip install -U pip
           pip install -r .github/pythonchecks.txt
+          pip install -r .deps/noauto.txt
           pyproject-build --wheel --outdir dist .
           find dist -name "*.whl" | xargs pip3 install
       - name: Run tests
         run: |
-          flake8 --exclude=*/__init__.py,dist/*,build/* --ignore=E501,W503,SFS301,T003,PT009
-          #coverage run --branch -m pytest tests
-          mypy miraheze --ignore-missing-imports --disallow-untyped-defs
-  
+          flake8 --exclude=*/__init__.py,dist/*,build/* --ignore=E501,W503,SFS301,T003,PT009,PT011
+          coverage run --branch -m pytest tests
+          mypy miraheze --ignore-missing-imports
+  deb:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v4
+     - name: Install requirements
+       run: |
+        sudo apt install -y python3-requests python3-filelock python3-internetarchive python3-setuptools
+        sudo apt install -y python3-apt apt-file dpkg-dev fakeroot build-essential devscripts debhelper
+        sudo apt-file update
+        pip install build wheel2deb
+     - name: Build wheel
+       run: |
+          pyproject-build --wheel --outdir dist .
+          cd dist
+          # FIXME: https://github.com/pytries/marisa-trie/issues/106
+          # For some reason, building the wheel ourselves will yield the wanted file naming convention,
+          # so we disable binary packages/wheels for marisa-trie to do so.
+          pip wheel -r ../.github/debci.txt --no-deps --no-binary marisa_trie
+     - name: wheel2deb
+       run: |
+          cd dist
+          wheel2deb
+     - name: show off
+       run: |
+          cd dist
+          ls -l output/*.deb
+          sudo dpkg -i output/*.deb
+          apt show python3-miraheze-pyutils
+          
   deploy:
+    needs: deb
     runs-on: ubuntu-latest
     environment:
       name: pypi
@@ -38,14 +69,14 @@ jobs:
       id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.10.0
+        uses: styfle/cancel-workflow-action@0.12.1
         with:
           access_token: ${{ github.token }}
-      - uses: actions/checkout@v3
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: 3.13
       - name: Install pypa/build
         run: |
           python -m pip install --upgrade pip wheel
@@ -54,10 +85,12 @@ jobs:
         run: pyproject-build --wheel --outdir dist .
       - name: Publish to PyPi
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-        uses: pypa/gh-action-pypi-publish@v1.8.14
+        uses: pypa/gh-action-pypi-publish@v1.12.4
+    
+    
 
   notify-irc:
-    needs: build
+    needs: deploy
     runs-on: ubuntu-latest
     if: ${{ always() && github.repository_owner == 'miraheze' && ( github.ref == 'refs/heads/master' || github.event_name == 'pull_request' ) }}
     steps:

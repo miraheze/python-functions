@@ -13,8 +13,8 @@ def reset_wiki(wiki: str) -> None:
         print(f'Error: Unable to determine the db cluster for {wiki}')
         sys.exit(1)
 
-    # Step 2: Execute deleteWiki.php
-    execute_salt_command(salt_command=generate_salt_command('mwtask181', f'mwscript extensions/CreateWiki/deleteWiki.php loginwiki --deletewiki {wiki} --delete {os.getlogin()}'))
+    # Step 2: Execute DeleteWiki
+    execute_salt_command(salt_command=generate_salt_command('mwtask181', f'mwscript CreateWiki:DeleteWiki loginwiki --deletewiki {wiki} --delete {os.getlogin()}'))
 
     # Step 3: Backup and drop database
     execute_salt_command(salt_command=generate_salt_command(wiki_cluster, f"sudo -i mysqldump {wiki} > {wiki}.sql'"))
