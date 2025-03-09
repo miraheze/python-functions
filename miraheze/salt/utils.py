@@ -35,7 +35,7 @@ def execute_salt_command(salt_command: str, shell: bool = True, stdout: Optional
         return None
     if response in ['s', 'skip']:
         return None
-    sys.exit(1)  # noqa: R503
+    sys.exit(1)
 
 
 def get_db_cluster(wiki: str) -> str:
