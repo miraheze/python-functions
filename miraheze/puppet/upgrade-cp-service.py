@@ -136,5 +136,6 @@ def process_server(server):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('--servers', dest='servers', action=ServersAction, required=True, help='server(s) to deploy to')
+    args = parser.parse_args()
     for server in servers:
-        process_server(server)
+        process_server(args.server)
