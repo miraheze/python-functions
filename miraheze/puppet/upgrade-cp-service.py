@@ -42,7 +42,7 @@ ENVIRONMENTS: EnvironmentList = {
 }
 del beta
 del prod
-HOSTNAME = socket.gethostname().split('.')[0]
+HOSTNAME = socket.gethostname().partition('.')[0]
 
 class ServersAction(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):  # noqa: U100
