@@ -138,4 +138,4 @@ if __name__ == "__main__":
     parser.add_argument('--servers', dest='servers', action=ServersAction, required=True, help='server(s) to deploy to')
     args = parser.parse_args()
     for server in args.servers:
-        process_server(args.server)
+        process_server(server)
