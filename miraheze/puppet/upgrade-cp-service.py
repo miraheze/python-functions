@@ -42,7 +42,7 @@ ENVIRONMENTS: EnvironmentList = {
 }
 del beta
 del prod
-HOSTNAME = socket.gethostname().split('.')[0]
+HOSTNAME = socket.gethostname().partition('.')[0]
 
 class ServersAction(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):  # noqa: U100
@@ -201,5 +201,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('--servers', dest='servers', action=ServersAction, required=True, help='server(s) to deploy to')
     args = parser.parse_args()
-    for server in servers:
-        process_server(args.server)
+    for server in args.servers:
+        process_server(args.servers)
