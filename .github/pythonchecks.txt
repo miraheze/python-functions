@@ -1,6 +1,6 @@
 ## TESTING ONLY
 pytest==8.3.5
-wheel==0.46.1
+setuptools=>70.1.0
 flake8==7.2.0
 flake8-unused-arguments==0.0.13
 flake8-sfs==1.0.0
