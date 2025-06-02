@@ -1,5 +1,5 @@
 ## TESTING ONLY
-pytest==8.3.5
+pytest==8.4.0
 setuptools>=70.1.0
 flake8==7.2.0
 flake8-unused-arguments==0.0.13
