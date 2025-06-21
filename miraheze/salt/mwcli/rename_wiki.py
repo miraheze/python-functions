@@ -14,9 +14,9 @@ def rename_wiki(oldwiki_db: str, newwiki_db: str) -> None:
         sys.exit(1)
 
     # Step 2: Execute SQL commands for rename
-    execute_salt_command(salt_command=generate_salt_command(oldwiki_cluster, f'mysqldump {oldwiki_db} > oldwikidb.sql'))
-    execute_salt_command(salt_command=generate_salt_command(oldwiki_cluster, f"mysql -e 'CREATE DATABASE {newwiki_db}'"))
-    execute_salt_command(salt_command=generate_salt_command(oldwiki_cluster, f"mysql -e 'USE {newwiki_db}; SOURCE /home/$user/oldwikidb.sql'"))
+    execute_salt_command(salt_command=generate_salt_command(oldwiki_cluster, f'mariadb-dump {oldwiki_db} > oldwikidb.sql'))
+    execute_salt_command(salt_command=generate_salt_command(oldwiki_cluster, f"mariadb -e 'CREATE DATABASE {newwiki_db}'"))
+    execute_salt_command(salt_command=generate_salt_command(oldwiki_cluster, f"mariadb -e 'USE {newwiki_db}; SOURCE /home/$user/oldwikidb.sql'"))
 
     # Step 3: Execute MediaWiki rename script
     execute_salt_command(salt_command=generate_salt_command('mwtask181', f'sudo -u www-data php /srv/mediawiki/1.43/maintenance/run.php CreateWiki:RenameWiki --wiki=loginwiki --rename {oldwiki_db} {newwiki_db} $user'))
