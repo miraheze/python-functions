@@ -6,6 +6,12 @@ import subprocess
 import sys
 
 
+# The threshold for --images-sleep's automatic calculation, where it'll decide
+# whether or not to sleep for 0s or 1s.
+# https://wm-bot.wmcloud.org/logs/%23miraheze-tech-ops/20250714.txt#:~:text=[05:37:19],That's%20sensible
+_IMAGES_SLEEP_AUTO_THRESHOLD = 1000
+
+
 def parse_args(input_args: list | None = None, check_paths: bool = True) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='A script to automate manual wiki imports')
     parser.add_argument(
@@ -28,6 +34,10 @@ def parse_args(input_args: list | None = None, check_paths: bool = True) -> argp
         '--search-recursively', action='store_true',
         help='Whether or not to pass --search-recursively (check files in subdirectories) to importImages.php',
     )
+    parser.add_argument(
+        '--images-sleep', type=int, default=-1,
+        help='The time to sleep between importing images for importImages.php (negative for auto-calculation)',
+    )
     parser.add_argument('wiki', help='Database name of the wiki to import to')
 
     args = parser.parse_args(input_args)
@@ -46,7 +56,26 @@ def parse_args(input_args: list | None = None, check_paths: bool = True) -> argp
         if args.images and not os.path.exists(args.images):
             raise ValueError(f'Cannot find images to import: {repr(args.images)}')
 
+    if args.images and args.images_sleep < 0:
+        args.images_sleep = calculate_images_sleep(args.images) if check_paths else 0
+
     return args
+
+
+def calculate_images_sleep(images: str) -> int:
+    # In the interest of code simplicity, all calculations are done assuming that
+    # --search-recursively is passed. It is unlikely where one wants to only upload
+    # files from a directory but not its subdirectories anyway, and this is meant
+    # to be a "eh, good enough" heuristic, so an "eh, good enough" algorithm for
+    # edge cases seems acceptable.
+    total = 0
+
+    for _, _, files in os.walk(images):
+        total += len(files)
+        if total >= _IMAGES_SLEEP_AUTO_THRESHOLD:
+            return 1
+
+    return 0
 
 
 def log(message: str):  # pragma: no cover
@@ -76,7 +105,7 @@ def get_scripts(args: argparse.Namespace) -> list[list[str]]:
         scripts.append(script)
 
     if args.images:
-        script = ['importImages', f'--comment={args.images_comment}']
+        script = ['importImages', f'--sleep={args.images_sleep}', f'--comment={args.images_comment}']
         if args.search_recursively:
             script.append('--search-recursively')
         script.extend(['--', args.images])

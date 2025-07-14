@@ -105,6 +105,54 @@ def test_parse_args_both_xml_images_exists():
     assert args.images == images
 
 
+def test_parse_args_images_sleep_manual():
+    args = mwimport.parse_args([
+        '--images=images',
+        '--images-comment=Importing from https://example.com',
+        '--images-sleep=5',
+        'examplewiki',
+    ], False)
+
+    assert args.images_sleep == 5
+
+
+def test_parse_args_images_sleep_auto_below_threshold():
+    with tempfile.TemporaryDirectory() as tempdir:
+        # Populate five test files
+        for i in range(5):
+            with open(os.path.join(tempdir, f'{i}.txt'), 'w'):
+                pass
+
+        args = mwimport.parse_args([
+            f'--images={tempdir}',
+            '--images-comment=Importing from https://example.com',
+            'examplewiki',
+        ])
+
+    assert args.images_sleep == 0
+
+
+def test_parse_args_images_sleep_auto_above_threshold():
+    with tempfile.TemporaryDirectory() as tempdir:
+        # Populate 1000 test files, bucketed in 10 directories
+        # (to test file counts with subdirectories)
+        for folder in range(10):
+            folder = os.path.join(tempdir, str(folder))
+            os.mkdir(folder)
+
+            for file in range(100):
+                with open(os.path.join(folder, f'{file}.txt'), 'w'):
+                    pass
+
+        args = mwimport.parse_args([
+            f'--images={tempdir}',
+            '--images-comment=Importing from https://example.com',
+            'examplewiki',
+        ])
+
+    assert args.images_sleep == 1
+
+
 def test_get_scripts_xml_images():
     args = mwimport.parse_args([
         '--version=0.42',
@@ -116,7 +164,7 @@ def test_get_scripts_xml_images():
     scripts = mwimport.get_scripts(args)
     expected = [
         ['importDump', '--no-updates', '--', 'dump.xml'],
-        ['importImages', '--comment=Importing from https://example.com', '--', 'images'],
+        ['importImages', '--sleep=0', '--comment=Importing from https://example.com', '--', 'images'],
         ['rebuildall'],
         ['initEditCount'],
         ['initSiteStats', '--update'],
@@ -157,7 +205,7 @@ def test_get_scripts_search_recursively():
     ], False)
     scripts = mwimport.get_scripts(args)
     expected = [
-        ['importImages', '--comment=Importing from https://example.com', '--search-recursively', '--', 'images'],
+        ['importImages', '--sleep=0', '--comment=Importing from https://example.com', '--search-recursively', '--', 'images'],
         ['initSiteStats', '--update'],
     ]
     expected = [
