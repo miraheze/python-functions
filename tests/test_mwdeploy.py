@@ -277,7 +277,7 @@ def test_UpgradePackAction():
     parser.add_argument('--versions', action='store', default=None)
     parser.add_argument('--upgrade-pack', action=UpgradePackAction)
     namespace = parser.parse_args(['--upgrade-pack', 'wikitide'])
-    assert namespace.upgrade_extensions == ['CreateWiki', 'DataDump', 'GlobalNewFiles', 'ImportDump', 'IncidentReporting', 'ManageWiki', 'MatomoAnalytics', 'MirahezeMagic', 'PDFEmbed', 'RemovePII', 'RequestSSL', 'RottenLinks', 'SpriteSheet', 'WikiDiscover', 'YouTube']
+    assert namespace.upgrade_extensions == ['CreateWiki', 'DataDump', 'GlobalNewFiles', 'ImportDump', 'IncidentReporting', 'ManageWiki', 'MatomoAnalytics', 'MirahezeMagic', 'PDFEmbed', 'RemovePII', 'RequestCustomDomain', 'RottenLinks', 'WikiDiscover']
 
 
 def test_LangAction():
