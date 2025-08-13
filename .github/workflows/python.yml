@@ -30,7 +30,6 @@ jobs:
           coverage run --branch -m pytest tests
           mypy miraheze --ignore-missing-imports
   deb:
-    needs: build
     runs-on: ubuntu-latest
     steps:
      - uses: actions/checkout@v5
@@ -60,7 +59,7 @@ jobs:
           apt show python3-miraheze-pyutils
           
   deploy:
-    needs: deb
+    needs: [build, deb]
     runs-on: ubuntu-latest
     environment:
       name: pypi
