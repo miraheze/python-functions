@@ -4,7 +4,7 @@ setuptools>=70.1.0
 flake8==7.3.0
 flake8-unused-arguments==0.0.13
 flake8-sfs==1.0.0
-flake8-builtins==2.5.0
+flake8-builtins==3.0.0
 flake8-commas==4.0.0
 flake8-comprehensions==3.16.0
 flake8-fixme==1.1.1
