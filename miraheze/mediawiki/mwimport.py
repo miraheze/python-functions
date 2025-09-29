@@ -41,6 +41,9 @@ def parse_args(input_args: list | None = None, check_paths: bool = True) -> argp
     parser.add_argument('wiki', help='Database name of the wiki to import to')
 
     args = parser.parse_args(input_args)
+    if not args.wiki.endswith('wiki') and not args.wiki.endswith('wikibeta'):
+        raise ValueError('<wiki> must be a proper database name')
+
     if not args.xml and not args.images:
         raise ValueError('--xml and/or --images must be passed')
     if args.images and not args.images_comment:

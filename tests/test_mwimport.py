@@ -52,6 +52,22 @@ def test_parse_args_username_prefix():
     assert args.username_prefix == 'w'
 
 
+def test_parse_args_beta_database_name():
+    args = mwimport.parse_args([
+        '--xml=dump.xml',
+        'examplewikibeta',
+    ], False)
+    assert args.wiki == 'examplewikibeta'
+
+
+def test_parse_args_invalid_database_name():
+    with pytest.raises(ValueError, match='<wiki> must be a proper database name'):
+        mwimport.parse_args([
+            '--xml=dump.xml',
+            'example',
+        ])
+
+
 def test_parse_args_need_xml_or_images():
     with pytest.raises(ValueError, match='--xml and/or --images must be passed'):
         mwimport.parse_args([
