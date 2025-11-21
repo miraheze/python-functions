@@ -10,7 +10,7 @@ jobs:
     env:
       DEBUG_ACCESS_KEY: ${{ secrets.DEBUG_ACCESS_KEY }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Python ${{ matrix.python }}
         uses: actions/setup-python@v6
         with:
@@ -32,7 +32,7 @@ jobs:
   deb:
     runs-on: ubuntu-latest
     steps:
-     - uses: actions/checkout@v5
+     - uses: actions/checkout@v6
      - name: Install requirements
        run: |
         sudo apt install -y python3-requests python3-filelock python3-internetarchive python3-setuptools
@@ -71,7 +71,7 @@ jobs:
         uses: styfle/cancel-workflow-action@0.12.1
         with:
           access_token: ${{ github.token }}
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python 3.13
         uses: actions/setup-python@v6
         with:
