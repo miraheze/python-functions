@@ -2,7 +2,7 @@
 pytest==9.0.2
 setuptools>=70.1.0
 flake8==7.3.0
-flake8-unused-arguments==0.0.13
+flake8-unused-arguments==0.0.14
 flake8-sfs==1.0.1
 flake8-builtins==3.1.0
 flake8-commas==4.0.0
