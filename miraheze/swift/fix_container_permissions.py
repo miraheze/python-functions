@@ -5,10 +5,10 @@ import subprocess
 
 def run_mwscript_setcontainersaccess(wiki: str, check: bool) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        ['mwscript', 'CreateWiki:SetContainersAccess', wiki],
+        ['mwscript', 'CreateWiki:SetContainersAccess', wiki, '--yes'],
         capture_output=True,
         text=True,
-        check=check
+        check=check,
     )
 
 
@@ -16,7 +16,7 @@ def fix_container_perms(wiki: str) -> None:
     out = run_mwscript_setcontainersaccess(wiki, check=False)
     matches = re.findall(
         r"Making sure 'mwstore:\/\/miraheze-swift\/([^']+)' exists\.\.\.[^\n]*failed\.",
-        (out.stdout or '') + '\n' + (out.stderr or '')
+        (out.stdout or '') + '\n' + (out.stderr or ''),
     )
 
     for container in matches:
@@ -28,7 +28,7 @@ def fix_container_perms(wiki: str) -> None:
                 '--write-acl', 'mw:media',
                 f'miraheze-{wiki}-{container}',
             ],
-            check=True
+            check=True,
         )
 
     run_mwscript_setcontainersaccess(wiki, check=True)
