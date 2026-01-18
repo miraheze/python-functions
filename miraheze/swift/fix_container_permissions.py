@@ -15,7 +15,7 @@ def run_mwscript_setcontainersaccess(wiki: str, check: bool) -> subprocess.Compl
 def fix_container_perms(wiki: str) -> None:
     out = run_mwscript_setcontainersaccess(wiki, check=False)
     matches = re.findall(
-        r"Making sure 'mwstore:\/\/miraheze-swift\/([^']+)' exists\.\.\.[^\n]*failed\.",
+        r"Making sure 'mwstore:\/\/miraheze-swift\/([^']+)' [^\n]+\.failed\.",
         (out.stdout or '') + '\n' + (out.stderr or ''),
     )
 
