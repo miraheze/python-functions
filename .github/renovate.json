@@ -1,0 +1,32 @@
+{
+	"extends": [ "config:recommended" ],
+
+	"prConcurrentLimit": 1,
+
+	"packageRules": [
+		{
+			"matchPackagePatterns": [ "*" ],
+			"groupName": "all dependencies",
+			"groupSlug": "all-deps",
+			"automerge": true,
+			"automergeType": "branch"
+		},
+		{
+			"matchManagers": [ "pip", "github-actions" ],
+			"rangeStrategy": "replace"
+		}
+	],
+
+	"ignoreDeps": [ "python" ],
+	"labels": [ "dependencies" ],
+
+	"pip_requirements": {
+		"fileMatch": [
+			"(^|/)requirements\\.txt$",
+			"(^|/)requirements/.*\\.txt$",
+			"(^|/)\\.github/.*requirements.*\\.txt$",
+			"^\\.github/debci\\.txt$",
+			"^\\.github/pythonchecks\\.txt$"
+		]
+	}
+}
