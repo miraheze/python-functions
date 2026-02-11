@@ -1,15 +1,37 @@
+import argparse
 import re
 import subprocess
-import argparse
+
+
+def run_mwscript_setcontainersaccess(wiki: str, check: bool) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ['mwscript', 'CreateWiki:SetContainersAccess', wiki, '--yes'],
+        capture_output=True,
+        text=True,
+        check=check,
+    )
 
 
 def fix_container_perms(wiki: str) -> None:
-    out = subprocess.run(['sudo', '-u', 'www-data', 'php', '/srv/mediawiki/1.43/maintenance/run.php', 'CreateWiki:SetContainersAccess', '--wiki', wiki], capture_output=True, text=True)
-    matches = re.findall(r"Making sure 'mwstore:\/\/miraheze-swift\/([^']+)' [^\n]+\.failed\.", out.stdout)
-    for match in matches:
-        subprocess.run(['swift', 'post', '--read-acl', 'mw:media', '--write-acl', 'mw:media', f'miraheze-{wiki}-{match}'], check=True)
+    out = run_mwscript_setcontainersaccess(wiki, check=False)
+    matches = re.findall(
+        r"Making sure 'mwstore:\/\/miraheze-swift\/([^']+)' [^\n]+\.failed\.",
+        (out.stdout or '') + '\n' + (out.stderr or ''),
+    )
 
-    subprocess.run(['sudo', '-u', 'www-data', 'php', '/srv/mediawiki/1.43/maintenance/run.php', 'CreateWiki:SetContainersAccess', '--wiki', wiki])
+    for container in matches:
+        subprocess.run(
+            [
+                'swift',
+                'post',
+                '--read-acl', 'mw:media',
+                '--write-acl', 'mw:media',
+                f'miraheze-{wiki}-{container}',
+            ],
+            check=True,
+        )
+
+    run_mwscript_setcontainersaccess(wiki, check=True)
 
 
 def main() -> None:
