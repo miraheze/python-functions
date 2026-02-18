@@ -14,7 +14,7 @@ flake8-return==1.2.0; python_version < '3.14' # buggy
 flake8-quotes==3.4.0
 flake8-simplify==0.30.0; python_version < '3.14' # buggy
 flake8-pytest==1.4
-flake8-type-checking==3.1.1
+flake8-type-checking==3.2.0
 mypy==1.19.1
 types-requests==2.32.4.20260107
 pytest-xdist==3.8.0
