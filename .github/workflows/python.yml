@@ -1,12 +1,12 @@
 name: Check Python
-on: [push, pull_request, merge_group]
+on: [push, pull_request]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: ['3.13', '3.14v']
+        python: ['3.13', '3.14']
     env:
       DEBUG_ACCESS_KEY: ${{ secrets.DEBUG_ACCESS_KEY }}
     steps:
