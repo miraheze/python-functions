@@ -31,8 +31,15 @@ jobs:
           mypy miraheze --ignore-missing-imports
   deb:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.13', '3.14']
     steps:
      - uses: actions/checkout@v6
+     - name: Python ${{ matrix.python }}
+       uses: actions/setup-python@v6
+       with:
+          python-version: ${{ matrix.python }} 
      - name: Install requirements
        run: |
         sudo apt install -y python3-requests python3-filelock python3-internetarchive python3-setuptools
