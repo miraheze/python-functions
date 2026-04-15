@@ -1,5 +1,5 @@
 ## TESTING ONLY
-pytest==9.0.2
+pytest==9.0.3
 setuptools>=70.1.0
 flake8==7.3.0
 flake8-unused-arguments==0.0.14
@@ -15,9 +15,9 @@ flake8-quotes==3.4.0
 flake8-simplify==0.30.0; python_version < '3.14' # buggy
 flake8-pytest==1.4
 flake8-type-checking==3.2.0
-mypy==1.19.1
-types-requests==2.32.4.20260107
+mypy==1.20.1
+types-requests==2.33.0.20260408
 pytest-xdist==3.8.0
 flake8-noqa==1.5.0; python_version < '3.14' # check behaves different on 3.13 and below
-coverage==7.13.4
-build==1.4.0
+coverage==7.13.5
+build==1.4.3
