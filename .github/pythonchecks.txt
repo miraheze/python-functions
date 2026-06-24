@@ -1,5 +1,5 @@
 ## TESTING ONLY
-pytest==9.0.3
+pytest==9.1.1
 setuptools>=70.1.0
 flake8==7.3.0
 flake8-unused-arguments==0.0.14
@@ -19,5 +19,5 @@ mypy==2.1.0
 types-requests==2.33.0.20260518
 pytest-xdist==3.8.0
 flake8-noqa==1.5.0; python_version < '3.14' # check behaves different on 3.13 and below
-coverage==7.14.1
+coverage==7.14.3
 build==1.5.0
